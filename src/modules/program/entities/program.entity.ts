@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Product } from '../../product/entities/product.entity';
 
 @Entity('tbl_programs')
 export class Program {
@@ -15,4 +16,8 @@ export class Program {
   secondary_color: string;
   @Column({ type: 'boolean', default: true })
   status: boolean;
+
+  // * Un programa tiene muchos productos
+  @OneToMany(() => Product, (product) => product.program)
+  products: Product[];
 }
