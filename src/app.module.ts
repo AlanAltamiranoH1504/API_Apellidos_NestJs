@@ -9,6 +9,9 @@ import { UsersModule } from './modules/users/users.module';
 import { ProductModule } from './modules/product/product.module';
 import { ProgramModule } from './modules/program/program.module';
 import { ClientsModule } from './modules/clients/clients.module';
+import { AuthServiceService } from './services/auth-service/auth-service.service';
+import { AuthServiceModule } from './services/auth-service/auth-service.module';
+import { AdressModule } from './modules/adress/adress.module';
 
 @Module({
   imports: [
@@ -24,8 +27,10 @@ import { ClientsModule } from './modules/clients/clients.module';
     ProductModule,
     ProgramModule,
     ClientsModule,
+    AuthServiceModule,
+    AdressModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, AuthServiceService],
 })
 export class AppModule {}
