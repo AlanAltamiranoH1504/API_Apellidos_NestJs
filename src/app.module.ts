@@ -8,6 +8,7 @@ import { typeOrmConfig } from './config/typeorm.config';
 import { UsersModule } from './modules/users/users.module';
 import { ProductModule } from './modules/product/product.module';
 import { ProgramModule } from './modules/program/program.module';
+import { ClientsModule } from './modules/clients/clients.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { ProgramModule } from './modules/program/program.module';
     UsersModule,
     ProductModule,
     ProgramModule,
+    ClientsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
