@@ -6,10 +6,13 @@ import {
   Patch,
   Param,
   Delete,
+  Put,
 } from '@nestjs/common';
 import { ClientsService } from './clients.service';
 import { CreateClientDto } from './dto/create-client.dto';
 import { UpdateClientDto } from './dto/update-client.dto';
+import { ListClientsDto } from './dto/list-clients.dto';
+import { IdValidationPipe } from '../../utils/pipes/id-validation/id-validation.pipe';
 
 @Controller('/api/v1/clients')
 export class ClientsController {
@@ -20,23 +23,26 @@ export class ClientsController {
     return this.clientsService.create(createClientDto);
   }
 
-  @Get()
-  findAll() {
-    return this.clientsService.findAll();
+  @Get('/list')
+  findAll(@Body() listClientsDto: ListClientsDto) {
+    return this.clientsService.findAll(listClientsDto);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
+  @Get('/find/:id')
+  findOne(@Param('id', IdValidationPipe) id: string) {
     return this.clientsService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateClientDto: UpdateClientDto) {
+  @Put('/update/:id')
+  update(
+    @Param('id', IdValidationPipe) id: string,
+    @Body() updateClientDto: UpdateClientDto,
+  ) {
     return this.clientsService.update(+id, updateClientDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
+  @Delete('/delete/:id')
+  remove(@Param('id', IdValidationPipe) id: string) {
     return this.clientsService.remove(+id);
   }
 }
