@@ -12,6 +12,7 @@ import { ClientsModule } from './modules/clients/clients.module';
 import { AuthServiceService } from './services/auth-service/auth-service.service';
 import { AuthServiceModule } from './services/auth-service/auth-service.module';
 import { AdressModule } from './modules/adress/adress.module';
+import { OrderModule } from './modules/order/order.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { AdressModule } from './modules/adress/adress.module';
     ClientsModule,
     AuthServiceModule,
     AdressModule,
+    OrderModule,
   ],
   controllers: [AppController],
   providers: [AppService, AuthServiceService],

@@ -2,10 +2,12 @@ import {
   Column,
   Entity,
   JoinColumn,
+  ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Program } from '../../program/entities/program.entity';
+import { Order } from '../../order/entities/order.entity';
 
 @Entity('tbl_products')
 export class Product {
@@ -27,4 +29,8 @@ export class Product {
   @ManyToOne(() => Program, (program) => program.products)
   @JoinColumn({ name: 'id_program' })
   program: Program;
+
+  // * Un producto puede estar en varias ordenes
+  @ManyToMany(() => Order, (order) => order.products)
+  orders: Order[];
 }

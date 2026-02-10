@@ -1,5 +1,12 @@
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Adress } from '../../adress/entities/adress.entity';
+import { Order } from '../../order/entities/order.entity';
 
 @Entity('tbl_clients')
 export class Client {
@@ -22,4 +29,8 @@ export class Client {
   // * Un cliente para una direccion
   @OneToOne(() => Adress, (address) => address.client, { cascade: true })
   address: Adress;
+
+  // * Un cliente para muchas ordenes
+  @OneToMany(() => Order, (order) => order.client)
+  orders: Order[];
 }
