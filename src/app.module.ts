@@ -13,6 +13,7 @@ import { AuthServiceService } from './services/auth-service/auth-service.service
 import { AuthServiceModule } from './services/auth-service/auth-service.module';
 import { AdressModule } from './modules/adress/adress.module';
 import { OrderModule } from './modules/order/order.module';
+import { RolsModule } from './modules/rols/rols.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { OrderModule } from './modules/order/order.module';
     AuthServiceModule,
     AdressModule,
     OrderModule,
+    RolsModule,
   ],
   controllers: [AppController],
   providers: [AppService, AuthServiceService],
