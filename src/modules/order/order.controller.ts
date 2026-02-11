@@ -32,6 +32,11 @@ export class OrderController {
     return this.orderService.findOne(+id);
   }
 
+  @Get('/find/client/:id')
+  findByClient(@Param('id', IdValidationPipe) id: string) {
+    return this.orderService.findByClient(+id);
+  }
+
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateOrderDto: UpdateOrderDto) {
     return this.orderService.update(+id, updateOrderDto);
@@ -42,8 +47,8 @@ export class OrderController {
     return this.orderService.remove(+id);
   }
 
-  @Delete(":id")
-  delete(@Param("id", IdValidationPipe) id: string) {
+  @Delete(':id')
+  delete(@Param('id', IdValidationPipe) id: string) {
     return this.orderService.delete(+id);
   }
 }

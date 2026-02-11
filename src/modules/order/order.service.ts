@@ -168,4 +168,31 @@ export class OrderService {
       message: 'Orden eliminada completamente',
     };
   }
+
+  async findByClient(id: number) {
+    const client = await this.clientService.findOne(id);
+    const orders_by_client = await this.orderRepository.find({
+      where: {
+        client: {
+          id_client: client.client.id_client,
+          status: true,
+        },
+      },
+      relations: ['contenido.product'],
+      order: {
+        crated_at: 'DESC',
+      },
+    });
+    if (orders_by_client.length === 0) {
+      throw new HttpException(
+        'El cliente no tiene ordenes',
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    return {
+      status: true,
+      orders: orders_by_client,
+      total: orders_by_client.length,
+    };
+  }
 }

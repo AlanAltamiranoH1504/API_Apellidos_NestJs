@@ -23,6 +23,9 @@ export class Order {
   @Column({ type: 'boolean', default: true })
   status: boolean;
 
+  @Column({ type: 'datetime', name: 'created_at' })
+  crated_at: Date;
+
   // * Una orden pertenece a un client
   @ManyToOne(() => Client, (client) => client.orders)
   @JoinColumn({ name: 'id_client' })
