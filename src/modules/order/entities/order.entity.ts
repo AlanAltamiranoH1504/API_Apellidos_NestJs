@@ -2,13 +2,12 @@ import {
   Column,
   Entity,
   JoinColumn,
-  JoinTable,
-  ManyToMany,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Client } from '../../clients/entities/client.entity';
-import { Product } from '../../product/entities/product.entity';
+import { OrderContent } from './order-content.entity';
 
 @Entity('tbl_orders')
 export class Order {
@@ -17,6 +16,10 @@ export class Order {
 
   @Column({ type: 'uuid', length: 100, nullable: false })
   sku: string;
+
+  @Column({ type: 'double', nullable: false })
+  total_amount: number;
+
   @Column({ type: 'boolean', default: true })
   status: boolean;
 
@@ -25,8 +28,9 @@ export class Order {
   @JoinColumn({ name: 'id_client' })
   client: Client;
 
-  // * Una orden puede tener varios productos
-  @ManyToMany(() => Product, (product) => product.orders)
-  @JoinTable({ name: 'tbl_orders_products' })
-  products: Product[];
+  // * Una orden puede tener varias lineas de contenido
+  @OneToMany(() => OrderContent, (order_content) => order_content.order, {
+    cascade: true,
+  })
+  contenido: OrderContent[];
 }

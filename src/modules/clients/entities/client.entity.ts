@@ -1,12 +1,15 @@
 import {
   Column,
   Entity,
+  JoinColumn,
+  ManyToOne,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Adress } from '../../adress/entities/adress.entity';
 import { Order } from '../../order/entities/order.entity';
+import { Program } from '../../program/entities/program.entity';
 
 @Entity('tbl_clients')
 export class Client {
@@ -33,4 +36,9 @@ export class Client {
   // * Un cliente para muchas ordenes
   @OneToMany(() => Order, (order) => order.client)
   orders: Order[];
+
+  // * Un cliente pertenece a un programa
+  @ManyToOne(() => Program, (program) => program.clients)
+  @JoinColumn({ name: 'id_program' })
+  program: Program;
 }

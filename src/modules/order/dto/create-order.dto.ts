@@ -4,7 +4,10 @@ import {
   IsInt,
   IsNotEmpty,
   IsPositive,
+  ValidateNested,
 } from 'class-validator';
+import { CreateOrderContentDto } from './create.order-content.dto';
+import { Type } from 'class-transformer';
 
 export class CreateOrderDto {
   @IsNotEmpty({ message: 'El ciente es obligatorio' })
@@ -12,8 +15,9 @@ export class CreateOrderDto {
   @IsInt({ message: 'El cliente es valido' })
   client: number;
 
-  @IsNotEmpty({ message: 'Los productos son requeridos' })
+  @ValidateNested({ each: true, message: 'Los productos son requeridos' })
+  @Type(() => CreateOrderContentDto)
   @IsArray({ message: 'Los productos debe ser un arreglo' })
-  @ArrayNotEmpty({ message: 'El array no puede estar vacio' })
-  products: number[];
+  @ArrayNotEmpty({ message: 'El array de productos no puede estar vacio' })
+  products: CreateOrderContentDto[];
 }

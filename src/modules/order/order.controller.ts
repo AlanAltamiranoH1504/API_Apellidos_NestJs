@@ -10,6 +10,8 @@ import {
 import { OrderService } from './order.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
+import { ListOrderDto } from './dto/list-order.dto';
+import { IdValidationPipe } from '../../utils/pipes/id-validation/id-validation.pipe';
 
 @Controller('/api/v1/orders')
 export class OrderController {
@@ -21,12 +23,12 @@ export class OrderController {
   }
 
   @Get('/list')
-  findAll() {
-    return this.orderService.findAll();
+  findAll(@Body() listOrderDto: ListOrderDto) {
+    return this.orderService.findAll(listOrderDto);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
+  @Get('/find/:id')
+  findOne(@Param('id', IdValidationPipe) id: string) {
     return this.orderService.findOne(+id);
   }
 
@@ -35,8 +37,13 @@ export class OrderController {
     return this.orderService.update(+id, updateOrderDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
+  @Delete('/delete/:id')
+  remove(@Param('id', IdValidationPipe) id: string) {
     return this.orderService.remove(+id);
+  }
+
+  @Delete(":id")
+  delete(@Param("id", IdValidationPipe) id: string) {
+    return this.orderService.delete(+id);
   }
 }
