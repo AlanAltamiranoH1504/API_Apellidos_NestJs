@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Put,
 } from '@nestjs/common';
 import { RolsService } from './rols.service';
 import { CreateRolDto } from './dto/create-rol.dto';
@@ -32,13 +33,21 @@ export class RolsController {
     return this.rolsService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateRolDto: UpdateRolDto) {
+  @Put('/update/:id')
+  update(
+    @Param('id', IdValidationPipe) id: string,
+    @Body() updateRolDto: UpdateRolDto,
+  ) {
     return this.rolsService.update(+id, updateRolDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
+  @Delete('/delete/:id')
+  remove(@Param('id', IdValidationPipe) id: string) {
     return this.rolsService.remove(+id);
+  }
+
+  @Delete('/destroy/:id')
+  destroy(@Param('id', IdValidationPipe) id: string) {
+    return this.rolsService.destroy(+id);
   }
 }

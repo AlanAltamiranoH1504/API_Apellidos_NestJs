@@ -67,11 +67,71 @@ export class RolsService {
     };
   }
 
-  update(id: number, updateRolDto: UpdateRolDto) {
-    return `This action updates a #${id} rol`;
+  async update(id: number, updateRolDto: UpdateRolDto) {
+    const name_in_use = await this.rolRepository.findOne({
+      where: {
+        name_rol: updateRolDto.name_rol,
+        program: {
+          id_program: updateRolDto.id_program,
+        },
+      },
+    });
+
+    if (name_in_use && name_in_use.id_rol !== id) {
+      throw new HttpException(
+        'El nombre del rol ya se encuentra en uso para el programa o no esta registrado',
+        HttpStatus.CONFLICT,
+      );
+    }
+
+    const rol_to_update = await this.rolRepository.findOne({
+      where: {
+        id_rol: id,
+        program: {
+          id_program: updateRolDto.id_program,
+        },
+      },
+    });
+    if (!rol_to_update) {
+      throw new HttpException(
+        'El rol no fue encontrado en la db',
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    Object.assign(rol_to_update, updateRolDto);
+    await this.rolRepository.save(rol_to_update);
+    return {
+      status: true,
+      message: 'Rol actualizado correctamente',
+    };
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} rol`;
+  async remove(id: number) {
+    const rol_to_remove = await this.findOne(id);
+    rol_to_remove.rol.status = false;
+    await this.rolRepository.save(rol_to_remove.rol);
+    return {
+      status: true,
+      message: 'Rol eliminado correctamente',
+    };
+  }
+
+  async destroy(id: number) {
+    const rol_to_destroy = await this.rolRepository.findOne({
+      where: {
+        id_rol: id,
+      },
+    });
+    if (!rol_to_destroy) {
+      throw new HttpException(
+        'El rol no se encuentra registrado en la base de datos',
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    await this.rolRepository.delete(rol_to_destroy.id_rol);
+    return {
+      status: true,
+      message: 'Rol eliminado correctamente',
+    };
   }
 }

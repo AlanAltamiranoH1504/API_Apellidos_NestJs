@@ -2,6 +2,7 @@ import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Product } from '../../product/entities/product.entity';
 import { Client } from '../../clients/entities/client.entity';
 import { Rol } from '../../rols/entities/rol.entity';
+import { User } from '../../user/entities/user.entity';
 
 @Entity('tbl_programs')
 export class Program {
@@ -26,6 +27,10 @@ export class Program {
   // * Un programa tiene muchos clientes
   @OneToMany(() => Client, (client) => client.program)
   clients: Client[];
+
+  // * Un programa tiene muchos usuarios
+  @OneToMany(() => User, (user) => user.program)
+  users: User[];
 
   // * Un programa tiene muchos roles
   @OneToMany(() => Rol, (rol) => rol.program)
