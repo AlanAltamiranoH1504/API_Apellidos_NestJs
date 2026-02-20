@@ -3,6 +3,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
+import * as bcrypt from 'bcrypt';
 import { Repository } from 'typeorm';
 import { Rol } from '../rols/entities/rol.entity';
 import { AddRolesDto } from './dto/add-roles.dto';
@@ -13,13 +14,10 @@ export class UserService {
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
     @InjectRepository(Rol) private readonly rolRepository: Repository<Rol>,
-    // protected readonly authService: AuthServiceService,
   ) {}
 
   async create(createUserDto: CreateUserDto) {
-    // const password_hash = await this.authService.hash_password(
-    //   createUserDto.password,
-    // );
+    const password_hash = await bcrypt.hash(createUserDto.password, 10)
     const rol_assing = await this.get_rols(
       [createUserDto.id_rol],
       createUserDto.id_program,
@@ -28,7 +26,7 @@ export class UserService {
       name_user: createUserDto.name_user,
       lastname: createUserDto.lastname,
       email: createUserDto.email,
-      password: createUserDto.password,
+      password: password_hash,
       program: {
         id_program: createUserDto.id_program,
       },

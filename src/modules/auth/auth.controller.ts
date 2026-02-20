@@ -18,10 +18,11 @@ export class AuthController {
     const rols = user_to_get_token.rols.map((rol) => {
       return rol.id_rol;
     });
-    return this.authService.login_admin({
+    return this.authService.generate_jwt({
       id_user: user_to_get_token.id_user,
       email: user_to_get_token.email,
       rols: rols,
+      id_program: user_to_get_token.id_program,
     });
   }
 }

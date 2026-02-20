@@ -26,12 +26,13 @@ export class RolsService {
     };
   }
 
-  async findAll(listRolsDto: ListRolsDto) {
+  async findAll(listRolsDto: ListRolsDto, req: any) {
+    const id_program = Number(req.user.id_program);
     const rols_by_program = await this.rolRepository.find({
       where: {
         status: listRolsDto.status,
         program: {
-          id_program: listRolsDto.id_program,
+          id_program: id_program,
         },
       },
     });

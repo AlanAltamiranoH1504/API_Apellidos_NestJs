@@ -3,18 +3,22 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
   Put,
+  UseGuards,
+  Request,
 } from '@nestjs/common';
 import { RolsService } from './rols.service';
+import type { Request as ExpressRequest } from 'express';
 import { CreateRolDto } from './dto/create-rol.dto';
 import { UpdateRolDto } from './dto/update-rol.dto';
 import { ListRolsDto } from './dto/list-rols.dto';
 import { IdValidationPipe } from '../../utils/pipes/id-validation/id-validation.pipe';
+import { JwtAuthGuard } from '../auth/JwtAuthGuard';
 
 @Controller('/api/v1/rols')
+@UseGuards(JwtAuthGuard)
 export class RolsController {
   constructor(private readonly rolsService: RolsService) {}
 
@@ -24,8 +28,8 @@ export class RolsController {
   }
 
   @Get('/list')
-  findAll(@Body() listRolsDto: ListRolsDto) {
-    return this.rolsService.findAll(listRolsDto);
+  findAll(@Body() listRolsDto: ListRolsDto, @Request() req: any) {
+    return this.rolsService.findAll(listRolsDto, req);
   }
 
   @Get('/find/:id')

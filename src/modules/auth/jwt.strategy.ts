@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
-import { UserAdminLogin } from '../../types/AuthInterfaces';
+import { DataToGenerateJWT } from '../../types/AuthInterfaces';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -12,11 +12,12 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       secretOrKey: '030503Vane150402Alan',
     });
   }
-  validate(payload: UserAdminLogin): unknown {
+  validate(payload: DataToGenerateJWT): unknown {
     return {
-      // id_user: payload.id_user,
+      id_user: payload.id_user,
       email: payload.email,
-      // rols: payload.rols,
+      rols: payload.rols,
+      id_program: payload.id_program,
     };
   }
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { DataToGenerateJWT, UserAdminLogin } from '../../types/AuthInterfaces';
+import { DataToGenerateJWT } from '../../types/AuthInterfaces';
 import * as bcrypt from 'bcrypt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../user/entities/user.entity';
@@ -13,17 +13,7 @@ export class AuthService {
     @InjectRepository(User) private readonly userRepository: Repository<User>,
   ) {}
 
-  private readonly salt_rounds = 10;
-
-  async hash_password(password: string) {
-    return await bcrypt.hash(password, this.salt_rounds);
-  }
-
-  async compare_password(password: string, password_hash: string) {
-    return await bcrypt.compare(password, password_hash);
-  }
-
-  login_admin(user: DataToGenerateJWT) {
+  generate_jwt(user: DataToGenerateJWT) {
     return {
       access_token: this.jwtService.sign(user),
     };
@@ -35,7 +25,7 @@ export class AuthService {
         email: email,
         status: true,
       },
-      relations: ['rols'],
+      relations: ['rols', 'program'],
     });
 
     if (!user_to_found) {
@@ -54,6 +44,7 @@ export class AuthService {
       id_user: user_to_found.id_user,
       email: user_to_found.email,
       rols: user_to_found.rols,
+      id_program: user_to_found.program.id_program,
     };
   }
 }
