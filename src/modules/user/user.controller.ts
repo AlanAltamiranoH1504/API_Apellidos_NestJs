@@ -13,6 +13,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { IdValidationPipe } from '../../utils/pipes/id-validation/id-validation.pipe';
 import { AddRolesDto } from './dto/add-roles.dto';
+import { ListUsersDto } from './dto/list-users.dto';
 
 @Controller('/api/v1/users')
 export class UserController {
@@ -23,9 +24,9 @@ export class UserController {
     return this.userService.create(createUserDto);
   }
 
-  @Get()
-  findAll() {
-    return this.userService.findAll();
+  @Get('/list')
+  findAll(@Body() listUsersDto: ListUsersDto) {
+    return this.userService.findAll(listUsersDto);
   }
 
   @Get('/find/:id')

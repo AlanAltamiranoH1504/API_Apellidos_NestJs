@@ -4,7 +4,7 @@ import { UpdateClientDto } from './dto/update-client.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Client } from './entities/client.entity';
 import { Repository } from 'typeorm';
-import { AuthServiceService } from '../../services/auth-service/auth-service.service';
+// import { AuthServiceService } from '../../services/auth-service/auth-service.service';
 import { ListClientsDto } from './dto/list-clients.dto';
 
 @Injectable()
@@ -12,20 +12,20 @@ export class ClientsService {
   constructor(
     @InjectRepository(Client)
     private readonly clientRepository: Repository<Client>,
-    private readonly authService: AuthServiceService,
+    // private readonly authService: AuthServiceService,
   ) {}
 
   async create(createClientDto: CreateClientDto) {
-    const password_hash = await this.authService.hash_password(
-      createClientDto.password,
-    );
+    // const password_hash = await this.authService.hash_password(
+    //   createClientDto.password,
+    // );
     const cliente_to_save = this.clientRepository.create({
       ...createClientDto,
       address: {
         ...createClientDto.address,
         zip_code: Number(createClientDto.address.zip_code),
       },
-      password: password_hash,
+      password: createClientDto.password,
     });
 
     const result_validated_email_in_use = await this.validated_email_in_use(
@@ -109,9 +109,9 @@ export class ClientsService {
     }
     const { address, ...clientData } = updateClientDto;
     Object.assign(user_to_update, clientData);
-    user_to_update.password = await this.authService.hash_password(
-      updateClientDto.password,
-    );
+    // user_to_update.password = await this.authService.hash_password(
+    //   updateClientDto.password,
+    // );
     if (address) {
       Object.assign(user_to_update.address, address);
     }

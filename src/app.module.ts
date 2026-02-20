@@ -8,12 +8,11 @@ import { typeOrmConfig } from './config/typeorm.config';
 import { ProductModule } from './modules/product/product.module';
 import { ProgramModule } from './modules/program/program.module';
 import { ClientsModule } from './modules/clients/clients.module';
-import { AuthServiceService } from './services/auth-service/auth-service.service';
-import { AuthServiceModule } from './services/auth-service/auth-service.module';
 import { AdressModule } from './modules/adress/adress.module';
 import { OrderModule } from './modules/order/order.module';
 import { RolsModule } from './modules/rols/rols.module';
 import { UserModule } from './modules/user/user.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -28,13 +27,13 @@ import { UserModule } from './modules/user/user.module';
     ProductModule,
     ProgramModule,
     ClientsModule,
-    AuthServiceModule,
     AdressModule,
     OrderModule,
     RolsModule,
     UserModule,
+    AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService, AuthServiceService],
+  providers: [AppService],
 })
 export class AppModule {}
